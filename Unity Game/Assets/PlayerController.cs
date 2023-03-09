@@ -4,97 +4,88 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    //**움직이는 속도
+    // ** 움직이는 속도
     private float Speed;
 
-    //**움직임을 저장하는 벡터
+    // ** 움직임을 저장하는 벡터
     private Vector3 Movement;
 
-    //**플레이어의 animator 구성요소를 받아오기위해....
-    public Animator animator;
+    // ** 플레이어의 Animator 구성요소를 받아오기위해...
+    private Animator animator;
 
-    //**플레이어의 spriteRenderer 구성요소를 받아오기 위해...
+    // ** 플레이어의 SpriteRenderer 구성요소를 받아오기위해...
     private SpriteRenderer playerRenderer;
 
-    //**[상태체크]
-    private bool onAttack; //공격상태
-    private bool onHit; //피격상태
-    private bool onJump; 
+    // ** [상태체크]
+    private bool onAttack; // 공격상태
+    private bool onHit; // 피격상태
+    private bool onJump;
     private bool onRoll;
 
-    //**복사할 총알 원본
+    // ** 복제할 총알 원본
     public GameObject BulletPrefab;
 
-    //**복제된 총알의 저장공간.
+    //**복제할 FX 원본
+    public GameObject fxPrefab;
+
+    public GameObject[] stageBack = new GameObject[7];
+
+    // ** 복제된 총알의 저장공간.
     private List<GameObject> Bullets = new List<GameObject>();
 
-
-    //**플레이어가 마지막으로 바라본 방향
+    // ** 플레이어가 마지막으로 바라본 방향.
     private float Direction;
+
+
 
     private void Awake()
     {
-        //**player의 Animator를 받아온다.
+        // ** player 의 Animator를 받아온다.
         animator = this.GetComponent<Animator>();
 
-        //**player의 spriterenderer를 받아온다
+        // ** player 의 SpriteRenderer를 받아온다.
         playerRenderer = this.GetComponent<SpriteRenderer>();
     }
 
-    //**유니티 기본 제공 함수
-    //**초기값을 설정할 때 사용
+    // ** 유니티 기본 제공 함수
+    // ** 초기값을 설정할 때 사용
     void Start()
     {
-        //**속도를 초기화
+        // ** 속도를 초기화.
         Speed = 5.0f;
 
-        //**초기값 셋팅
+        // ** 초기값 셋팅
         onAttack = false;
         onHit = false;
-        onJump = false;
-        onRoll = false;
-        Direction = 1.0f;        
+        Direction = 1.0f;
+
+
     }
 
-    //**유니티 기본 제공 함수
-    //**프레임마다 반복적으로 실행되는 함수
+    // ** 유니티 기본 제공 함수
+    // ** 프레임마다 반복적으로 실행되는 함수.
     void Update()
     {
-        //**실수 연산 [IEEE754]
+        // **  Input.GetAxis =     -1 ~ 1 사이의 값을 반환함. 
+        float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 셋중에 하나를 반환.
 
-        //** Input.GetAxis = -1 ~ 1 사이의 값을 반환함
-        float Hor = Input.GetAxisRaw("Horizontal"); //-1 or 0 or 1 셋중에 하나를 반환
-        float Ver = Input.GetAxis("Vertical"); // -1 ~ 1 까지 실수로 반환.
-
-
-        //** Hor이 0이라면 멈춰있는 상태이므로 예외 처리
+        // ** Hor이 0이라면 멈춰있는 상태이므로 예외처리를 해준다. 
         if (Hor != 0)
             Direction = Hor;
 
-        //**플레이어가 바라보고있는 방향에 따라 이미지 반전 설정
+        // ** 플레이어가 바라보고있는 방향에 따라 이미지 반전 설정.
         if (Direction < 0)
-        {
             playerRenderer.flipX = true;
-        }
         else if (Direction > 0)
             playerRenderer.flipX = false;
 
 
-        //**
-        playerRenderer.flipX = (Hor < 0) ? true : false;
-
-        //**입력받은 값으로 플레이어를 움직인다
-        Movement += new Vector3(
+        // ** 입력받은 값으로 플레이어를 움직인다.
+        Movement = new Vector3(
             Hor * Time.deltaTime * Speed,
-            Ver * Time.deltaTime * Speed,
+            0.0f,
             0.0f);
 
-
-
-        //**좌측 컨트롤키를 입력 한다면....
-        if (Input.GetKey(KeyCode.LeftControl))
-            OnAttack(); //**공격
 
         //**좌측 시프트키를 입력한다면.....
         if (Input.GetKey(KeyCode.LeftShift))
@@ -107,29 +98,34 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.CapsLock))
             OnRoll();
 
-        //**z를 입력한다면
-        if (Input.GetKeyDown(KeyCode.Z))
+        // ** 스페이스바를 입력한다면..
+        if (Input.GetKeyDown(KeyCode.LeftControl))
         {
-            //**총알 원본을 복제한다
-            GameObject Obj = Instantiate(BulletPrefab);
-            //Obj.transform.name = "";
+            // ** 공격
+            OnAttack();
 
-            //**복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다
+            // ** 총알원본을 본제한다.
+            GameObject Obj = Instantiate(BulletPrefab);
+
+            // ** 복제된 총알의 위치를 현재 플레이어의 위치로 초기화한다.
             Obj.transform.position = transform.position;
 
-            //**총알의 bullercontroller 스크립트를 받아온다
+            // ** 총알의 BullerController 스크립트를 받아온다.
             BullerController Controller = Obj.AddComponent<BullerController>();
 
-            //**총알 스크립트내부의 방향 변수를 현재 플레이어의 방향변수로 설정한다
-            Controller.Direction = new Vector3(Hor, 0.0f, 0.0f);
+            // ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정 한다.
+            Controller.Direction = new Vector3(Direction, 0.0f, 0.0f);
 
-            //**총알의 SpriteRenderer를 받아온다
-            SpriteRenderer bulletrenderer = Obj.GetComponent<SpriteRenderer>();
+            //**총알 스크립트 내부의 FX Prefab을 설정한다
+            Controller.fxPrefab = fxPrefab; 
 
-            //**총알의 이미지 반전 상태를 플레이어의 이미지 반전상태로 설정한다
-            bulletrenderer.flipY = playerRenderer.flipX;
+            // ** 총알의 SpriteRenderer를 받아온다.
+            SpriteRenderer buleltRenderer = Obj.GetComponent<SpriteRenderer>();
 
-            //**모든 설정이 종료 되었다면 저장소에 보관한다
+            // ** 총알의 이미지 반전 상태를 플레이어의 이미지 반전 상태로 설정한다.
+            buleltRenderer.flipY = playerRenderer.flipX;
+
+            // ** 모든 설정이 종료되었다면 저장소에 보관한다.
             Bullets.Add(Obj);
         }
 
@@ -137,7 +133,9 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", Hor);
 
         //**실제 플레이어를 움직인다
-        transform.position += Movement;
+
+        //**offset box
+        //transform.position += Movement;
     }
 
     private void OnAttack()
