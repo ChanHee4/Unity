@@ -36,7 +36,8 @@ public class PlayerController : MonoBehaviour
     // ** 플레이어가 마지막으로 바라본 방향.
     private float Direction;
 
-
+    public bool DirLeft;
+    public bool DirRight;
 
     private void Awake()
     {
@@ -59,9 +60,12 @@ public class PlayerController : MonoBehaviour
         onHit = false;
         Direction = 1.0f;
 
+
+        DirLeft = false;
+        DirRight = false;
+
         for (int i = 0; i < 7; ++i)
             stageBack[i] = GameObject.Find(i.ToString());
-
     }
 
     // ** 유니티 기본 제공 함수
@@ -74,12 +78,25 @@ public class PlayerController : MonoBehaviour
         // ** Hor이 0이라면 멈춰있는 상태이므로 예외처리를 해준다. 
         if (Hor != 0)
             Direction = Hor;
+        else
+        {
+            DirLeft = false;
+            DirRight = false;
+        }
 
         // ** 플레이어가 바라보고있는 방향에 따라 이미지 반전 설정.
         if (Direction < 0)
-            playerRenderer.flipX = true;
+        {
+            //playerRenderer.flipX = Dir = true;
+            DirLeft = true;
+            //**실제 플레이어를 움직인다
+            transform.position += Movement;
+        }
+
         else if (Direction > 0)
+        {
             playerRenderer.flipX = false;
+        }
 
 
         // ** 입력받은 값으로 플레이어를 움직인다.
