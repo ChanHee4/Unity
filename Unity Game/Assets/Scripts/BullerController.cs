@@ -7,10 +7,10 @@ public class BullerController : MonoBehaviour
     // ** 총알이 날아가는 속도
     private float Speed;
 
-    //**총알이 충돌한 횟수
+    // ** 총알이 충돌한 횟수
     private int hp;
 
-    //**이펙트 효과 원본
+    // ** 이펙트효과 원본
     public GameObject fxPrefab;
 
     // ** 총알이 날아가야할 방향
@@ -21,7 +21,7 @@ public class BullerController : MonoBehaviour
         // ** 속도 초기값
         Speed = 10.0f;
 
-        //**충돌 횟수를 3으로 지정한다
+        // ** 충돌 횟수를 3으로 지정한다.
         hp = 3;
     }
 
@@ -34,27 +34,27 @@ public class BullerController : MonoBehaviour
     // ** 충돌체와 물리엔진이 포함된 오브젝트가 다른 충돌체와 충돌한다면 실행되는 함수. 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //**충돌 횟수 차감
+        // ** 충돌횟수 차감.
         --hp;
 
-        //**이펙트 효과 복제
+        // ** 이펙트효과 복제.
         GameObject Obj = Instantiate(fxPrefab);
 
-        //**진동 효과를 생성할 관리자 생성
+        // ** 진동효과를 생성할 관리자 생성.
         GameObject camera = new GameObject("Camera Test");
-        
-        //**진동 효과 컨트롤러 생성
+
+        // ** 진동 효과 컨트롤러 생성.
         camera.AddComponent<CameraController>();
 
-        //**이펙트 효과의 위치를 지정
+        // ** 이펙트효과의 위치를 지정
         Obj.transform.position = transform.position;
 
-        //**collision = 충돌한 대상
-        //**충돌한 대상을 삭제한다
+        // ** collision = 충돌한 대상.
+        // ** 충돌한 대상을 삭제한다. 
         Destroy(collision.transform.gameObject);
 
-        //**총알의 충돌 횟수가 0이 되면 총알 삭제
-        if (hp == 0)
+        // ** 총알의 충돌 횟수가 0이 되면 총알 삭제.
+        if(hp==0)
             Destroy(this.gameObject);
     }
 }

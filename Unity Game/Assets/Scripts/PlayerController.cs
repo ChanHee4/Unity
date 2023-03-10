@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerController : MonoBehaviour
 {
     // ** 움직이는 속도
@@ -19,13 +20,11 @@ public class PlayerController : MonoBehaviour
     // ** [상태체크]
     private bool onAttack; // 공격상태
     private bool onHit; // 피격상태
-    private bool onJump;
-    private bool onRoll;
 
     // ** 복제할 총알 원본
     public GameObject BulletPrefab;
 
-    //**복제할 FX 원본
+    // ** 복제할 FX 원본
     public GameObject fxPrefab;
 
     public GameObject[] stageBack = new GameObject[7];
@@ -36,6 +35,8 @@ public class PlayerController : MonoBehaviour
     // ** 플레이어가 마지막으로 바라본 방향.
     private float Direction;
 
+
+    // ** 플레이어가 바라보는 방향
     public bool DirLeft;
     public bool DirRight;
 
@@ -56,10 +57,9 @@ public class PlayerController : MonoBehaviour
         Speed = 5.0f;
 
         // ** 초기값 셋팅
-        onAttack = false;
+        onAttack = false;        
         onHit = false;
         Direction = 1.0f;
-
 
         DirLeft = false;
         DirRight = false;
@@ -83,20 +83,20 @@ public class PlayerController : MonoBehaviour
             DirLeft = false;
             DirRight = false;
         }
-
+        
         // ** 플레이어가 바라보고있는 방향에 따라 이미지 반전 설정.
-        if (Direction < 0)
+        if(Direction < 0)
         {
-            //playerRenderer.flipX = Dir = true;
-            DirLeft = true;
-            //**실제 플레이어를 움직인다
+            playerRenderer.flipX = DirLeft = true;
+            // ** 실제 플레이어를 움직인다.
             transform.position += Movement;
         }
-
         else if (Direction > 0)
         {
             playerRenderer.flipX = false;
+            DirRight = true;
         }
+
 
 
         // ** 입력받은 값으로 플레이어를 움직인다.
@@ -106,19 +106,13 @@ public class PlayerController : MonoBehaviour
             0.0f);
 
 
-        //**좌측 시프트키를 입력한다면.....
+        // ** 좌측 쉬프트키를 입력한다면.....
         if (Input.GetKey(KeyCode.LeftShift))
-            OnHit(); //**피격
-
-        //**스페이스바를 입력한다면.....
-        if (Input.GetKey(KeyCode.Space))
-            OnJump(); //**점프
-
-        if (Input.GetKey(KeyCode.CapsLock))
-            OnRoll();
+            // ** 피격
+            OnHit();
 
         // ** 스페이스바를 입력한다면..
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             // ** 공격
             OnAttack();
@@ -135,8 +129,8 @@ public class PlayerController : MonoBehaviour
             // ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정 한다.
             Controller.Direction = new Vector3(Direction, 0.0f, 0.0f);
 
-            //**총알 스크립트 내부의 FX Prefab을 설정한다
-            Controller.fxPrefab = fxPrefab; 
+            // ** 총알 스크립트내부의 FX Prefab을 설정한다.
+            Controller.fxPrefab = fxPrefab;
 
             // ** 총알의 SpriteRenderer를 받아온다.
             SpriteRenderer buleltRenderer = Obj.GetComponent<SpriteRenderer>();
@@ -148,86 +142,51 @@ public class PlayerController : MonoBehaviour
             Bullets.Add(Obj);
         }
 
-        //**플레이어의 움직임에 따라 이동 모션을 실행한다
+        // ** 플레이의 움직임에 따라 이동 모션을 실행 한다.
         animator.SetFloat("Speed", Hor);
-
-        //**실제 플레이어를 움직인다
-
-        //**offset box
-        //transform.position += Movement;
     }
 
     private void OnAttack()
     {
-        //**이미 공격모션이 진행중이라면
+        // ** 이미 공격모션이 진행중이라면
         if (onAttack)
-            //**함수를 종료시킨다
-            return; 
+            // ** 함수를 종료시킨다.
+            return;
 
-        //**함수가 종료되지 않았다면
-        //**공격상태를 활성화 하고 
+        // ** 함수가 종료되지 않았다면...
+        // ** 공격상태를 활성화 하고.
         onAttack = true;
 
-        //**공격 모션을 실행한다
+        // ** 공격모션을 실행 시킨다.
         animator.SetTrigger("Attack");
     }
+
     private void SetAttack()
     {
-        //**함수가 실행되면 공격모션이 비활성화 된다
-        //**함수는 애니메이션 클립의 이벤트프레임으로 삽입됨
+        // ** 함수가 실행되면 공격모션이 비활성화 된다.
+        // ** 함수는 애니매이션 클립의 이벤트 프레임으로 삽입됨.
         onAttack = false;
     }
 
     private void OnHit()
     {
-        //**이미 피격모션이 진행중이라면
+        // ** 이미 피격모션이 진행중이라면
         if (onHit)
-            //**함수를 종료킨다
+            // ** 함수를 종료시킨다.
             return;
 
-        //**함수가 종료되지 않았다면
-        //**피격상태를 활성화하고
+        // ** 함수가 종료되지 않았다면...
+        // ** 피격상태를 활성화 하고.
         onHit = true;
 
-        //**피격 모션을 실행한다
+        // ** 피격모션을 실행 시킨다.
         animator.SetTrigger("Hit");
-
     }
 
     private void SetHit()
     {
-        //**함수가 실행되면 피격모션이 비활성화 된다
-        //**함수는 애니메이션 클립의 이벤트프레임으로 삽입됨
+        // ** 함수가 실행되면 피격모션이 비활성화 된다.
+        // ** 함수는 애니매이션 클립의 이벤트 프레임으로 삽입됨.
         onHit = false;
     }
-
-    private void OnJump() 
-    {
-        if (onJump)
-            return;
-
-        onJump = true;
-        animator.SetTrigger("Jump");
-    }
-
-    private void SetJump()
-    {
-        onJump = false;
-    }
-
-    private void OnRoll()
-    {
-        if (onRoll)
-            return;
-
-        onRoll = true;
-        animator.SetTrigger("Roll");
-    }
-
-    private void SetRoll()
-    {
-        onRoll = false;
-    }
-
-
 }
