@@ -216,4 +216,7 @@ public class PlayerController : MonoBehaviour
         // ** 함수는 애니매이션 클립의 이벤트 프레임으로 삽입됨.
         onHit = false;
     }
+
+
+    
 }
