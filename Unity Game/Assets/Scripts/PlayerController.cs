@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 public class PlayerController : MonoBehaviour
 {
     // ** 움직이는 속도
@@ -27,7 +28,13 @@ public class PlayerController : MonoBehaviour
     // ** 복제할 FX 원본
     private GameObject fxPrefab;
 
+    // 추후 list로 변경
     public GameObject[] stageBack = new GameObject[7];
+
+    /*
+    Dictionary<string, object>;
+    Dictionary<string, GameObject>;
+     */
 
     // ** 복제된 총알의 저장공간.
     private List<GameObject> Bullets = new List<GameObject>();
@@ -35,9 +42,12 @@ public class PlayerController : MonoBehaviour
     // ** 플레이어가 마지막으로 바라본 방향.
     private float Direction;
 
-
+    [Header("방향")]
     // ** 플레이어가 바라보는 방향
+
+    [Tooltip("왼쪽")]
     public bool DirLeft;
+    [Tooltip("오른쪽")]
     public bool DirRight;
 
 
@@ -51,7 +61,8 @@ public class PlayerController : MonoBehaviour
 
         // ** [Resources] 폴더에서 사용할 리소스를 들고온다.
         BulletPrefab = Resources.Load("Prefabs/Bullet") as GameObject;
-        fxPrefab = Resources.Load("Prefabs/FX/Smoke") as GameObject;
+        //fxPrefab = Resources.Load("Prefabs/FX/Smoke") as GameObject;
+        fxPrefab = Resources.Load("Prefabs/FX/Hit") as GameObject;
     }
 
     // ** 유니티 기본 제공 함수
@@ -79,12 +90,15 @@ public class PlayerController : MonoBehaviour
     {
         // **  Input.GetAxis =     -1 ~ 1 사이의 값을 반환함. 
         float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 셋중에 하나를 반환.
+        float Ver = Input.GetAxisRaw("Vertical"); // -1 or 0 or 1 셋중에 하나를 반환.
 
         // ** 입력받은 값으로 플레이어를 움직인다.
         Movement = new Vector3(
             Hor * Time.deltaTime * Speed,
-            0.0f,
+            Ver * Time.deltaTime * (Speed * 0.5f),
             0.0f);
+
+        transform.position += new Vector3(0.0f, Movement.y, 0.0f);
 
         // ** Hor이 0이라면 멈춰있는 상태이므로 예외처리를 해준다. 
         if (Hor != 0)
@@ -92,8 +106,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            // ** 플레이어의 좌표가 0.0 보다 작을때 플레이어만 움직인다.
-            if (transform.position.x < 0)
+            // ** 플레이어의 좌표가 0.1f 보다 작을때 플레이어만 움직인다.
+            if (transform.position.x < 0.1f)
                 transform.position += Movement;
             else
             {
@@ -114,7 +128,9 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
+
+        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || 
+            Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
             ControllerManager.GetInstance().DirRight = false;
             ControllerManager.GetInstance().DirLeft = false;
@@ -151,7 +167,7 @@ public class PlayerController : MonoBehaviour
             Obj.transform.position = transform.position;
 
             // ** 총알의 BullerController 스크립트를 받아온다.
-            BullerController Controller = Obj.AddComponent<BullerController>();
+            BulletController Controller = Obj.AddComponent<BulletController>();
 
             // ** 총알 스크립트내부의 방향 변수를 현재 플레이어의 방향 변수로 설정 한다.
             Controller.Direction = new Vector3(Direction, 0.0f, 0.0f);
@@ -217,6 +233,8 @@ public class PlayerController : MonoBehaviour
         onHit = false;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
 
-    
+    }
 }
