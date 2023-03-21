@@ -27,15 +27,15 @@ public class Test : MonoBehaviour
     }
 
 
-    public void PushButton1()
+    public void PushButton()
     {
         ButtonImages[0].fillAmount = 0;
         Buttons[0].GetComponent<Button>().enabled = false;
 
-        StartCoroutine(PushButton1_Coroutine());
+        StartCoroutine(PushButton_Coroutine());
     }
 
-    IEnumerator PushButton1_Coroutine()
+    IEnumerator PushButton_Coroutine()
     {
         float cool = cooldown;
 
@@ -54,113 +54,23 @@ public class Test : MonoBehaviour
         ControllerManager.GetInstance().BulletSpeed += 0.025f;
     }
 
-
-    public void PushButton2()
-    {
-        ButtonImages[1].fillAmount = 0;
-        Buttons[1].GetComponent<Button>().enabled = false;
-
-        StartCoroutine(PushButton2_Coroutine());
-    }
-
-    IEnumerator PushButton2_Coroutine()
-    {
-        float cool = cooldown;
-
-        while (ButtonImages[1].fillAmount != 1)
-        {
-            ButtonImages[1].fillAmount += Time.deltaTime * cool;
-            yield return null;
-        }
-
-        Buttons[1].GetComponent<Button>().enabled = true;
-    }
-
     public void Testcase2()
     {
-        cooldown = 0.5f;
-        ControllerManager.GetInstance().BulletSpeed += 0.025f;
-    }
-
-
-    public void PushButton3()
-    {
-        ButtonImages[2].fillAmount = 0;
-        Buttons[2].GetComponent<Button>().enabled = false;
-
-        StartCoroutine(PushButton3_Coroutine());
-    }
-
-    IEnumerator PushButton3_Coroutine()
-    {
-        float cool = cooldown;
-
-        while (ButtonImages[2].fillAmount != 1)
-        {
-            ButtonImages[2].fillAmount += Time.deltaTime * cool;
-            yield return null;
-        }
-
-        Buttons[2].GetComponent<Button>().enabled = true;
+        print("테스트 메세지 2 입니다.");
     }
 
     public void Testcase3()
     {
-        cooldown = 0.5f;
-        ControllerManager.GetInstance().BulletSpeed += 0.025f;
-    }
-
-    public void PushButton4()
-    {
-        ButtonImages[3].fillAmount = 0;
-        Buttons[3].GetComponent<Button>().enabled = false;
-
-        StartCoroutine(PushButton4_Coroutine());
-    }
-
-    IEnumerator PushButton4_Coroutine()
-    {
-        float cool = cooldown;
-
-        while (ButtonImages[3].fillAmount != 1)
-        {
-            ButtonImages[3].fillAmount += Time.deltaTime * cool;
-            yield return null;
-        }
-
-        Buttons[3].GetComponent<Button>().enabled = true;
+        print("테스트 메세지 3 입니다.");
     }
 
     public void Testcase4()
     {
-        cooldown = 0.5f;
-        ControllerManager.GetInstance().BulletSpeed += 0.025f;
-    }
-
-    public void PushButton5()
-    {
-        ButtonImages[4].fillAmount = 0;
-        Buttons[4].GetComponent<Button>().enabled = false;
-
-        StartCoroutine(PushButton5_Coroutine());
-    }
-
-    IEnumerator PushButton5_Coroutine()
-    {
-        float cool = cooldown;
-
-        while (ButtonImages[4].fillAmount != 1)
-        {
-            ButtonImages[4].fillAmount += Time.deltaTime * cool;
-            yield return null;
-        }
-
-        Buttons[4].GetComponent<Button>().enabled = true;
+        print("테스트 메세지 4 입니다.");
     }
 
     public void Testcase5()
     {
-        cooldown = 0.5f;
-        ControllerManager.GetInstance().BulletSpeed += 0.025f;
+        print("테스트 메세지 5 입니다.");
     }
 }
