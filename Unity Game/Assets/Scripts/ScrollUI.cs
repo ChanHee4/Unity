@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class ScrollUI : MonoBehaviour
 {
     public GameObject ui;
     public RectTransform uiTranspos;
@@ -18,7 +18,7 @@ public class Test : MonoBehaviour
 
     private void Start()
     {
-        uiTranspos.sizeDelta = new Vector2(5.0f, 5.0f);
+        uiTranspos.sizeDelta = new Vector2(5.0f, 5.5f);
 
         sizeX = 1000.0f;
         sizeY = 500.0f;
