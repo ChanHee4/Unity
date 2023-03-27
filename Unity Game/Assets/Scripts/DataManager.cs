@@ -39,7 +39,6 @@ public class DataManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.UpArrow))
         {
             ++value;
-            
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -61,7 +60,6 @@ public class DataManager : MonoBehaviour
 
         FileStream fileStream = new FileStream(
             Application.dataPath + "/Resources/saveFile/Data.json", FileMode.Create);
-
 
         byte[] data = Encoding.UTF8.GetBytes(Jsondata);
 
