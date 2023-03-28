@@ -5,7 +5,7 @@ using UnityEngine;
 public class ControllerManager
 {
     private ControllerManager() { }
-    private static ControllerManager Instance = null;
+    public static ControllerManager Instance = null;
 
     public static ControllerManager GetInstance()
     {
@@ -19,4 +19,5 @@ public class ControllerManager
 
     public float BulletSpeed = 10.0f;
     public int Player_HP = 100;
+
 }

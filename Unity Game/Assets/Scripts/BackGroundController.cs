@@ -83,7 +83,7 @@ public class BackGroundController : MonoBehaviour
         if (player.transform.position.x + (sprite.bounds.size.x * 0.5f) + 1 > endPoint)
         {
             // ** 이미지를 복제한다.
-            GameObject Obj =  Instantiate(this.gameObject);
+            GameObject Obj = Instantiate(this.gameObject);
 
             // ** 본제된 이미지의 부모를 설정한다.
             Obj.transform.SetParent(parent.transform);
@@ -93,15 +93,15 @@ public class BackGroundController : MonoBehaviour
 
             // ** 복제된 이미지의 위치를 설정한다.
             Obj.transform.position = new Vector3(
-                endPoint + 25.0f,
-                0.0f, 0.0f);
+                endPoint + 19.0f,
+                transform.position.y, 0.0f);
 
             // ** 시작지점을 변경한다.
             endPoint += endPoint + 25.0f;
         }
 
         // ** 종료지점에 도달하면 삭제한다.
-        if(transform.position.x + (sprite.bounds.size.x * 0.5f) - 2 < exitPoint)
+        if (transform.position.x + (sprite.bounds.size.x * 0.5f) - 2 < exitPoint)
             Destroy(this.gameObject);
     }
 }
