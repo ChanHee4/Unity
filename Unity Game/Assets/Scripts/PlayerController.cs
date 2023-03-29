@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 
@@ -53,6 +54,9 @@ public class PlayerController : MonoBehaviour
 
     private float CoolDown;
 
+    
+    private bool isPlayerdie = false;
+
 
     private void Awake()
     {
@@ -87,6 +91,8 @@ public class PlayerController : MonoBehaviour
 
         for (int i = 0; i < 7; ++i)
             stageBack[i] = GameObject.Find(i.ToString());
+
+        StartCoroutine(Setdie());
     }
 
     // ** 유니티 기본 제공 함수
@@ -168,6 +174,8 @@ public class PlayerController : MonoBehaviour
 
         // ** 플레이의 움직임에 따라 이동 모션을 실행 한다.
         animator.SetFloat("Speed", Hor);
+
+        if (isPlayerdie) return;
     }
 
     IEnumerator OnAttack()
@@ -243,4 +251,25 @@ public class PlayerController : MonoBehaviour
     {
 
     }
+
+
+    IEnumerator Setdie()
+    {
+        while (true)
+        {
+            
+            if (ControllerManager.GetInstance().Player_HP <= 0)
+            {
+                isPlayerdie = true;
+                animator.SetTrigger("die");
+                yield return new WaitForSeconds(2); 
+                SceneManager.LoadScene("Game Start");
+
+            }
+            yield return new WaitForEndOfFrame(); 
+        }
+    }
+
+    
+
 }
