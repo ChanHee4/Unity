@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+
+
     // ** 움직이는 속도
     private float Speed;
 
@@ -51,12 +53,9 @@ public class PlayerController : MonoBehaviour
     [Tooltip("오른쪽")]
     public bool DirRight;
 
-
     private float CoolDown;
-
     
     private bool isPlayerdie = false;
-
 
     private void Awake()
     {
@@ -99,6 +98,14 @@ public class PlayerController : MonoBehaviour
     // ** 프레임마다 반복적으로 실행되는 함수.
     void Update()
     {
+        if (GameManager.instance.currentGameState == GameManager.GameState.inGame)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                
+            }
+        }
+
         // **  Input.GetAxis =     -1 ~ 1 사이의 값을 반환함. 
         float Hor = Input.GetAxisRaw("Horizontal"); // -1 or 0 or 1 셋중에 하나를 반환.
         float Ver = Input.GetAxisRaw("Vertical"); // -1 or 0 or 1 셋중에 하나를 반환.
@@ -138,15 +145,12 @@ public class PlayerController : MonoBehaviour
                 transform.position += Movement;
         }
 
-
-
         if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow) || 
             Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
             ControllerManager.GetInstance().DirRight = false;
             ControllerManager.GetInstance().DirLeft = false;
         }
-        
 
         // ** 플레이어가 바라보고있는 방향에 따라 이미지 반전 설정.
         if (Direction < 0)
@@ -164,8 +168,6 @@ public class PlayerController : MonoBehaviour
             onAttack = false;
             StartCoroutine(OnAttack());
         }
-
-
 
         // ** 좌측 쉬프트키를 입력한다면.....
         if (Input.GetKey(KeyCode.LeftShift))
@@ -217,7 +219,6 @@ public class PlayerController : MonoBehaviour
         onAttack = true;
     }
 
-
     private void SetAttack()
     {
         // ** 함수가 실행되면 공격모션이 비활성화 된다.
@@ -252,24 +253,18 @@ public class PlayerController : MonoBehaviour
 
     }
 
-
     IEnumerator Setdie()
     {
         while (true)
         {
-            
             if (ControllerManager.GetInstance().Player_HP <= 0)
             {
                 isPlayerdie = true;
                 animator.SetTrigger("die");
                 yield return new WaitForSeconds(2); 
                 SceneManager.LoadScene("Game Start");
-
             }
             yield return new WaitForEndOfFrame(); 
         }
     }
-
-    
-
 }
