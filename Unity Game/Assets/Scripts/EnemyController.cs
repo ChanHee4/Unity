@@ -89,11 +89,9 @@ public class EnemyController : MonoBehaviour
             CoolDown -= Time.deltaTime;
             yield return null;
         }
-
         CoolDown = 5.0f;
         SkillAttack = true;
     }
-
 
     private void DestroyEnemy()
     {

@@ -27,7 +27,6 @@ public class EnemyManager : MonoBehaviour
     // ** 플레이어의 누적 이동 거리
     public float Distance;
 
-
     private void Awake()
     {
         if (instance == null)
@@ -61,7 +60,6 @@ public class EnemyManager : MonoBehaviour
 
             // ** 복제된 UI를 캔버스에 위치시킨다.
             Bar.transform.SetParent(GameObject.Find("EnemyHPCanvas").transform);
-            
 
             // ** Enemy 작동 스크립트 포함.
             //Obj.AddComponent<EnemyController>();
@@ -89,7 +87,6 @@ public class EnemyManager : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
         }
     }
-
 
     private void Update()
     {
