@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
 
     //스코어 텍스트를 연결한 변수
     public TMP_Text scoreText;
+
     //누적 점수를 기록하기 위한 변수
     private long totScore = 0L;
 
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+
         //instance에 할당된 클래스의 인스턴스가 다를 경우 새로 생성된 클래스를 의미함
         else if (instance != this)
         {
@@ -109,6 +111,7 @@ public class GameManager : MonoBehaviour
         {
             //몬스터 생성
             var _monster = Instantiate<GameObject>(monster);
+
             //몬스터의 이름을 지정
             _monster.name = $"Monster_{i:00}";
 
@@ -133,7 +136,6 @@ public class GameManager : MonoBehaviour
                 return _monster;
             }
         }
-
         return null;
     }
 
