@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
     {
         anim.SetFloat("Speed", inputVec.magnitude);
 
-        if (inputVec.x != 0) ;
+        if (inputVec.x != 0)
         {
             spriter.flipX = inputVec.x < 0;
         }
