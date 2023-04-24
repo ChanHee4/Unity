@@ -39,8 +39,6 @@ public class Player : MonoBehaviour
         inputVec.y = Input.GetAxisRaw("Vertical");
     }
 
-
-
     void FixedUpdate()
     {
         if (!GameManager.instance.isLive)

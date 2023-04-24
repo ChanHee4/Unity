@@ -36,14 +36,12 @@ public class PoolManager : MonoBehaviour
             }
         }
 
-
         //.... 못 찾았으면?
         if (!select)
         {
             //..새롭게 생성하고 select 변수에 할당
             select = Instantiate(prefabs[index], transform);
         }
-
 
         return select;
     }

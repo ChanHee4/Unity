@@ -82,7 +82,6 @@ public class Enemy : MonoBehaviour
         if (health > 0)
         {
             anim.SetTrigger("Hit");
-            
         }
         else
         {
@@ -104,7 +103,7 @@ public class Enemy : MonoBehaviour
         Vector3 dirVec = transform.position - playerPos;
         rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
     }
-        
+
     void Dead()
     {
         gameObject.SetActive(false);

@@ -90,7 +90,6 @@ public class GameManager : MonoBehaviour
             gameTime = maxGameTime;
             GameVictory();
         }
-
     }
 
     public void GetExp()

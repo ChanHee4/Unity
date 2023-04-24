@@ -55,7 +55,6 @@ public class LevelUp : MonoBehaviour
         {
             Item ranItem = items[ran[index]];
 
-
             //3. 만렙 아이템의 경우는 소비아이템으로 대체
             if (ranItem.level == ranItem.data.damages.Length)
             {
