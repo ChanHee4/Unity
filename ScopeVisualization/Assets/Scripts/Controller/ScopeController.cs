@@ -69,7 +69,6 @@ public class ScopeController : MonoBehaviour
                 0.0f,
                 Mathf.Cos(deltaAngle * Mathf.Deg2Rad));
 
-
             Ray ray = new Ray(transform.position, point.normalized);
 
             RaycastHit hit;
