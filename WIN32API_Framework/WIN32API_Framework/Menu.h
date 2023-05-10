@@ -1,15 +1,15 @@
 #pragma once
-#include "GameObject.h"
+#include "Scene.h"
 
-class Enemy : public GameObject
+class Menu : public Scene
 {
 public:
-	virtual GameObject* Start()override;
+	virtual void Start()override;
 	virtual int Update()override;
 	virtual void Render(HDC hdc)override;
 	virtual void Destroy()override;
 public:
-	Enemy();
-	virtual ~Enemy();
+	Menu();
+	virtual ~Menu();
 };
 
