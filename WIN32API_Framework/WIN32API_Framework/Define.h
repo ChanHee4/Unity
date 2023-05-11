@@ -6,7 +6,6 @@ extern HWND g_hWnd;
 const int COUNT = 128;
 
 
-
 #define WIDTH 1500
 #define HEIGHT 900
 
@@ -25,16 +24,17 @@ const unsigned char STATEID_ATTACK = 0x00000002;
 const unsigned char STATEID_JUMP = 0x00000004;
 
 
-
-#define Single(T)                   \
-public:                             \
-	static T& Instance()            \
-	{                               \
-		static T instance;          \
-		return instance;            \
-	}                               \
-private:                            \
-	T(const T&) = delete;           \
+#define Single(T)					\
+public:								\
+	static T** GetInstance()		\
+	{								\
+		static T* instance;			\
+		if(instance == nullptr)		\
+			instance = new T;		\
+		return &instance;			\
+	}								\
+private:							\
+	T(const T&) = delete;			\
 	T& operator=(const T&) = delete;
 
-#define GetSingle(T) (T::GetInstance())
+#define GetSingle(T) (*T::GetInstance())

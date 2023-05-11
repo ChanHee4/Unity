@@ -1,64 +1,104 @@
 #include <iostream>
-#include <Windows.h>
-#include
 
 using namespace std;
 
-#define function(x) (std::cout <<x<<std::endl)
-
-#define Single(T)                   \
-public:                             \
-	static T& Instance()            \
-	{                               \
-		static T instance;          \
-		return instance;            \
-	}                               \
-private:                            \
-	T(const T&) = delete;           \
-	T& operator=(const T&) = delete;
-
-#define GetSingle(T) (T::GetInstance())
-
-template<typename T>
-class Singleton
+typedef struct tagNode
 {
+	tagNode* next;
+	int value;
+}NODE;
 
-public:
-	Single(Singleton)
-/*
-private:
-	static Singleton* Instance;
-public:
-	static Singleton* GetInstance()
-	{
-		if (Instance == nullptr)
-			Instance = new Singleton;
+NODE* List;
+int Length;
 
-		return Instance;
-	}
-*/
-private:
-	int Value;
-public:
-	int GetValue() { return Value; }
-	void SetValue(int value) { Value = value; }
-private:
-	Singleton() :Value(0) {}
-public:
-	~Singleton() {}
-};
 
-//Singleton* Singleton: Instance = nullptr;
-
-int* function()
+void push(int value)
 {
-	int value = 10;
+	NODE* nextNode = List;
 
-	return &value;
+	while (nextNode->next != nullptr)
+		nextNode = nextNode->next;
+
+	//** create
+	nextNode->next = new NODE;
+
+	//** initialize
+	nextNode->next->next = nullptr;
+	nextNode->next->value = value;
+
+	++Length;
 }
+
+
+void insert(int count, int value)
+{
+	// ** 리스트에 담긴 총 원소의 개수보다 count의 값이 크다면
+	// ** 값을 추가할 수 없으므로 종료.
+	if (Length < count)
+		return;
+
+	// ** 리스트를 들고옴.
+	NODE* nextNode = List;
+
+	// ** 카운트의 값 만큼 다음 노드로 이동.
+	while (0 < count)
+	{
+		--count;
+
+		// ** 다음노드로 이동
+		nextNode = nextNode->next;
+	}
+	// ** 이동이 끝났다면 새로운 노드를 추가.
+
+	// ** 새로운 노드 생성
+	NODE* newNode = new NODE;
+	newNode->next = nullptr;
+	newNode->value = value;
+	
+	// ** 다음 노드를 임시의 저장소에 저장.
+	NODE* tempNode = nextNode->next;
+
+	// ** 다음노드를 저장하는 저장소에 새로운 노드를 배치.
+	nextNode->next = newNode;
+
+	// ** 새로운 노드가 가르키는 다음노드를 임시공간에 있던 노드로 배치
+	newNode->next = tempNode;
+}
+
 
 int main(void)
 {
-	GetSingle(Singleton).SetValue(10);
-	cout << GetSingle(Singleton).GetValue() << endl;
+	// ** 첫번째 노드
+	// create
+	List = new NODE; 
+
+	// initialize
+	List->next = nullptr;
+	List->value = 0;
+
+	//===========================================
+	
+	push(10);
+	push(20);
+	push(30);
+	push(40);
+
+	insert(2, 25);
+
+
+	// ** 두번째 노드를 nextNode 에 넘겨준다.
+	NODE* nextNode = List->next;
+
+	// ** nextNode가 nullptr이 아니라면 반복.
+	while (nextNode != nullptr)
+	{
+		// ** 출력
+		cout << nextNode->value << endl;
+
+		// ** 다음노드로 이동
+		nextNode = nextNode->next;
+	}
+
+
+	return 0;
 }
