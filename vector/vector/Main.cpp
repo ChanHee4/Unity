@@ -3,22 +3,25 @@
 
 using namespace std;
 
+
 int* Numbers;
 int Size;
 int Capacity;
+
 
 void erase(int _where)
 {
 	if (_where > Size || _where <= 0)
 		return;
-	
+
 	--Size;
+	--_where;
 
 	for (int i = _where; i < Size; ++i)
-		Numbers[i + 1] = Numbers[i];
+		Numbers[i] = Numbers[i + 1];
 }
 
-void insert(int _where, int _value) 
+void insert(int _where, int _value)
 {
 	if (_where > Size)
 		return;
@@ -31,13 +34,12 @@ void insert(int _where, int _value)
 
 	_where -= 1;
 
-	for (int i = Size; _where <= i; --i)
+	for (int i = Size; _where <= i ; --i)
 		Numbers[i + 1] = Numbers[i];
-	
+
 	Numbers[_where] = _value;
 	++Size;
 }
-
 
 void pop_back()
 {
@@ -82,7 +84,18 @@ int main(void)
 
 	erase(6);
 
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < Size; ++i)
 		cout << Numbers[i] << endl;
 	return 0;
 }
+
+
+/*
+* 예시 1
+* 지각 11:20
+* 사유 : 우천으로 인한 교통 혼란 / 늦잠.
+* 
+* 예시 2
+* 결석
+* 사유 : 감기몸살/가족여행.
+*/
