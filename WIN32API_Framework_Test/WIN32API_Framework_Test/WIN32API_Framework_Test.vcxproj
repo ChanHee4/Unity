@@ -143,8 +143,14 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Logo.cpp" />
+    <ClCompile Include="MainUpdate.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Stage.cpp" />
     <ClCompile Include="WIN32API_Framework_Test.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,8 +161,14 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Include.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Logo.h" />
+    <ClInclude Include="MainUpdate.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="Structs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
