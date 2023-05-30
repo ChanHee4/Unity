@@ -4,8 +4,9 @@
 #include "ObjectManager.h"
 #include "ObjectPool.h"
 #include "Protptype.h"
+#include "ImageManager.h"
+#include "Bitmap.h"
 
-#include <tchar.h>
 
 Stage::Stage() : m_pPlayer(nullptr), EnemyList(nullptr), BulletList(nullptr)
 {
@@ -44,6 +45,15 @@ void Stage::Start()
 	}
 
 	EnemyList = ObjectManager::GetInstance()->GetObjectList("Enemy");
+
+	m_mapImageList = GetSingle(ImageManager)->GetImageList();
+
+	(*m_mapImageList)["BackGround"] = (new Bitmap)->LoadBmp(L"../Resource/Stage/BackGround.bmp");
+	(*m_mapImageList)["Buffer"] = (new Bitmap)->LoadBmp(L"../Resource/Stage/Buffer.bmp");
+	(*m_mapImageList)["PlayerR"] = (new Bitmap)->LoadBmp(L"../Resource/Stage/Player.bmp");
+	(*m_mapImageList)["PlayerL"] = (new Bitmap)->LoadBmp(L"../Resource/Stage/Player_L.bmp");
+
+	GameObject::SetImageList(m_mapImageList);
 }
 
 int Stage::Update()
@@ -58,10 +68,27 @@ int Stage::Update()
 
 void Stage::Render(HDC hdc)
 {
-	if (m_pPlayer)
-		m_pPlayer->Render(hdc);
+	BitBlt((*m_mapImageList)["Buffer"]->GetMemDC(),			// 복사해 넣을 그림판 ?!
+		0, 0, WIDTH, HEIGHT,		// 복사할 영역 시작점으로부터 끝부분까지
+		(*m_mapImageList)["BackGround"]->GetMemDC(),		// 복사할 이미지
+		0, 0,				// 스케일을 잡아준다.
+		SRCCOPY);			// 소스 영역을 대상 영역에 복사한다.
 
-	ObjectManager::GetInstance()->Render(hdc);
+
+	ObjectManager::GetInstance()->Render(
+		(*m_mapImageList)["Buffer"]->GetMemDC());
+
+	
+	if (m_pPlayer)
+		m_pPlayer->Render(
+			(*m_mapImageList)["Buffer"]->GetMemDC());
+
+	BitBlt(hdc,			// 복사해 넣을 그림판 ?!
+		0, 0, WIDTH, HEIGHT,		// 복사할 영역 시작점으로부터 끝부분까지
+		(*m_mapImageList)["Buffer"]->GetMemDC(),		// 복사할 이미지
+		0, 0,				// 스케일을 잡아준다.
+		SRCCOPY);			// 소스 영역을 대상 영역에 복사한다.
+
 
 #ifdef DEBUG
 	list<GameObject*>* enemyList = ObjectManager::GetInstance()->GetObjectList("Enemy");
@@ -93,6 +120,13 @@ void Stage::Render(HDC hdc)
 		// ** 출력
 		TextOut(hdc, 50, 50, (LPCWSTR)t, (int)str.size());
 	}
+
+	/*
+	Graphics graphics(hdc);
+	Image image(L"../Resource/Stage/BackGround.png");
+	graphics.DrawImage(&image, 0, 0);
+	*/
+
 
 	if (normalList != nullptr && !normalList->empty())
 	{

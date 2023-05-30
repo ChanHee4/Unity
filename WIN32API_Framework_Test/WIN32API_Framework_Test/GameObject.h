@@ -20,7 +20,7 @@ public:
 
 	Vector3 GetPosition()const { return transform.position; }
 	void SetPosition(const Vector3& _position) { transform.position = _position; }
-
+	
 	Vector3 GetScale()const { return transform.scale; }
 	void SetScale(const Vector3& _scale) { transform.scale = _scale; }
 public:
