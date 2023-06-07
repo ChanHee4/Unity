@@ -14,6 +14,7 @@ MainUpdate::~MainUpdate()
 void MainUpdate::Start()
 {
 	m_hdc = GetDC(g_hWnd);
+	srand(GetTickCount64());
 
 	stage = new Stage;
 	stage->Start();
@@ -26,7 +27,6 @@ void MainUpdate::Update()
 
 void MainUpdate::Render()
 {
-	Rectangle(m_hdc, 0, 0, 1500, 1000);
 	stage->Render(m_hdc);
 }
 

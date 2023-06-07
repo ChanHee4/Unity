@@ -1,11 +1,14 @@
 #pragma once
 #include "Include.h"
 
+class Bitmap;
 class Object;
 class Stage
 {
 private:
-	Object* object;
+	map<string, Bitmap*> ImageList;
+	vector<Object*> TileList;
+	int Result;
 public:
 	void Start();
 	void Update();
